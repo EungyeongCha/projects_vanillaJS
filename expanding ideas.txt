@@ -1,0 +1,9 @@
+movie seat booking
+- 할인: 3개 이상 예매시 10%할인후 UI에 보이게
+
+custom video player
+- 비디오 끝나면 화면 UI뒤로가기 버튼 추가해서 처음으로 돌아가게
+if currenttime = duration
+
+exchange rate
+- 구글 지도 api이용해서 가까운 환전소
