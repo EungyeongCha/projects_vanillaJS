@@ -15,6 +15,35 @@ const dummyTransactions = [
 
 let transactions = dummyTransactions;
 
+// transaction 추가
+function addTransaction(e) {
+  e.preventDefault();
+
+  if (text.value.trim() === '' || amount.value.trim() === '') {
+    alert('Please add a text and amount');
+  } else {
+    const transaction = {
+      id: generateID(),
+      text: text.value,
+      amount: +amount.value,
+    };
+
+    transactions.push(transaction);
+
+    addTransactionDOM(transaction);
+
+    updateValues();
+
+    text.value = '';
+    amount.value = '';
+  }
+}
+
+// 랜덤 ID 생성
+function generateID() {
+  return Math.floor(Math.random() * 100000000);
+}
+
 // transaction DOM list에 추가
 function addTransactionDOM(transaction) {
   // +/- 구분
@@ -28,7 +57,9 @@ function addTransactionDOM(transaction) {
   item.innerHTML = `
         ${transaction.text} <span>${sign}${Math.abs(
     transaction.amount
-  )}</span> <button class="delete-btn">x</button>
+  )}</span> <button class="delete-btn" onClick="removeTransaction(${
+    transaction.id
+  })">x</button>
     `;
 
   list.appendChild(item);
@@ -55,6 +86,13 @@ function updateValues() {
   money_minus.innerHTML = `$${expense}`;
 }
 
+// ID값으로 transaction 삭제하기
+function removeTransaction(id) {
+  transactions = transactions.filter((transaction) => transaction.id !== id);
+
+  init();
+}
+
 // Init app
 function init() {
   list.innerHTML = '';
@@ -64,3 +102,5 @@ function init() {
 }
 
 init();
+
+form.addEventListener('submit', addTransaction);
