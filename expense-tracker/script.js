@@ -6,14 +6,21 @@ const form = document.getElementById('form');
 const text = document.getElementById('text');
 const amount = document.getElementById('amount');
 
-const dummyTransactions = [
-  { id: 1, text: 'Flower', amount: -20 },
-  { id: 2, text: 'Salary', amount: 300 },
-  { id: 3, text: 'Book', amount: -10 },
-  { id: 4, text: 'Camera', amount: 150 },
-];
+// const dummyTransactions = [
+//   { id: 1, text: 'Flower', amount: -20 },
+//   { id: 2, text: 'Salary', amount: 300 },
+//   { id: 3, text: 'Book', amount: -10 },
+//   { id: 4, text: 'Camera', amount: 150 },
+// ];
 
-let transactions = dummyTransactions;
+// stringfy된 데이터를 array로 변환 (getItem, JSON.parse)
+const localStorageTransactions = JSON.parse(
+  localStorage.getItem('transactions')
+);
+
+// localstorage에 기존 아이템이 있는지 확인
+let transactions =
+  localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
 // transaction 추가
 function addTransaction(e) {
@@ -33,6 +40,8 @@ function addTransaction(e) {
     addTransactionDOM(transaction);
 
     updateValues();
+
+    updateLocalStorage();
 
     text.value = '';
     amount.value = '';
@@ -90,7 +99,15 @@ function updateValues() {
 function removeTransaction(id) {
   transactions = transactions.filter((transaction) => transaction.id !== id);
 
+  updateLocalStorage();
+
   init();
+}
+
+// localstorage에 transaction들을 업데이트
+function updateLocalStorage() {
+  // array를 스트링 형태로 저장 (setItem, JSON.stringify)
+  localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
 // Init app
